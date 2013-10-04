@@ -6,18 +6,24 @@ function initInterface() {
 
 function selectCardOnClick() {
 	$('body').on('click', '.playable', function(){
-		if ($(this) == selectedCard) {
-			playCard(selectedCard);
+		var selectedCard = $(this);
+		
+		if (selectedCard.hasClass('selected')) {
+			playCard(selectedCard.css('z-index'));
 		}
 		else {
-			moveCardDown(selectedCard);
-			selectedCard = $(this);
+			var lastSelectedCard = $('.selected').first();
+			if (lastSelectedCard.length > 0) {
+				moveCardDown(lastSelectedCard);
+				lastSelectedCard.removeClass('selected');
+			}
+			selectedCard.addClass('selected');
 			moveCardUp(selectedCard);
 		}
 	});
 	
 	$('body').on('click', '.selectable_for_nest', function(){
-		selectedCard = $(this);
+		var selectedCard = $(this);
 		
 		if (selectedCard.hasClass('selected_for_nest')) {
 			selectedCard.removeClass('selected_for_nest');

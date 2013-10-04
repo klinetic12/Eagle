@@ -60,13 +60,12 @@ function compareCards(a,b) {
 	}
 }
 
-function findBestCard(a,b) {
-	if (getValueForCard(a) < getValueForCard(b)) {
-		return -1;
+function findBestCard(cards) {
+	var values = [];
+	for (var i = 0; i < cards.length; i++) {
+		values[i] = getValueForCard(cards[i]);
 	}
-	else {
-		return 1;
-	}
+	return values.indexOf(Math.max.apply(Math, values));
 }
 
 function getValueForCard(card) {

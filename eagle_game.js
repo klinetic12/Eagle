@@ -16,9 +16,6 @@ var currentPlayer = 0;
 var teamHandPoints = [0, 0];
 var centerCards = [];
 
-// Player specific
-var selectedCard;
-
 
 function Player(name) {
 	this.name = name;
@@ -147,35 +144,62 @@ function startHand() {
 	centerCards = [];
 }
 
-function playCard(card) {
+function playCard(index) {
 	removeClass(players[currentPlayer].cards, 'playable');
+	var selectedCard = players[currentPlayer].cards[index];
 	
 	// Add card to the center
-	for (var i = players[currentPlayer].cards.length-1; i >= 0 ; i--) {
-		if (players[currentPlayer].cards[i].view == card) {
-			centerCards[currentPlayer] = card;
-			players[currentPlayer].cards.splice(i, 1);
-			
-		}
-	}
-	startingColor = centerCards[startingPlayer].color;
+	centerCards[currentPlayer] = selectedCard;
+	players[currentPlayer].cards.splice(index, 1);
+	printPlayerCards(currentPlayer);
+	selectedCard.view.addClass("p" + currentPlayer);
 	
 	// Check if last card
-	if (centerCards.length == 4) {
-		centerCards.sort(findBestCard);
-		var winningPlayer = $(center.cards[3]).attr('id').splice(0,1);
+	if (currentPlayer == (startingPlayer+3) % 4) {
+		var winningPlayer = findBestCard(centerCards);
 		addToScore(centerCards, winningPlayer);
 		
+		// Last card in the hand
 		if (players[currentPlayer].cards.length == 0) {
 			addToScore(nest.cards, winningPlayer);
 			endHand();
 		}
 		else {
-			startingPlayer = winningPlayer;
-			$('.'+startingPlayer).addClass('playable');
-			handLoop();
+			currentPlayer = startingPlayer = winningPlayer;
+			addClass(players[currentPlayer].cards, 'playable');
 		}
 	}
+	else {
+		// Set the starting color if necessary
+		if (currentPlayer == startingPlayer) {
+			if (selectedCard.color == 'EAGLE') {
+				startingColor = trumpColor;
+			}
+			else {
+				startingColor = selectedCard.color;
+			}
+		}
+		currentPlayer = (currentPlayer + 1) % 4;
+		
+		setPlayableCards();
+	}
+}
+
+function setPlayableCards() {
+	var playableCards = [];
+	var cards = players[currentPlayer].cards;
+	
+	// Prefer starting color
+	for (var i = 0; i < cards.length; i++) {
+		if (cards[i].color == startingColor || (cards[i].color == 'EAGLE' && startingColor == trumpColor)) {
+			playableCards.push(cards[i]);
+		}
+	}
+	// If player doesn't have starting color, allow any color
+	if (playableCards.length == 0) {
+		playableCards = cards;
+	}
+	addClass(playableCards, 'playable');
 }
 
 function addToScore(cards, winningPlayer) {

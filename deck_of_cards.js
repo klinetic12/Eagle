@@ -40,7 +40,10 @@ function Card(color, number) {
 }
 
 function compareCards(a,b) {
-	if (a.color < b.color) {
+	if (a.color == 'EAGLE') {
+		return 1;
+	}
+	if (b.color == 'EAGLE' || a.color < b.color) {
 		return -1;
 	}
 	if (a.color > b.color) {

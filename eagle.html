@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Rook</title>
+<link rel="stylesheet" href="rook.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script src="deck_of_cards.js" type="text/javascript"></script>
+<script src="eagle_interface.js" type="text/javascript"></script>
+<script src="eagle_game.js" type="text/javascript"></script>
+</head>
+<body>
+	<div id="dialog" class="hidden">
+		<div id="dialog_text">
+			<span id="bid_text" class="dialog_bid"></span>
+			<span id="nest_text" class="dialog_nest hidden">Select a trump color and five cards to return to the nest</span>
+		</div>
+		<div id="input_wrapper">
+			<form id="nest_input" class="dialog_nest hidden">
+				<select id="trump_color" onchange="rerenderSubmitButton()">
+					<option value="BLACK">Black</option>
+					<option value="BLUE">Blue</option>
+					<option value="GREEN">Green</option>
+					<option value="RED">Red</option>
+				</select>
+				<input id="submit_button" type="button" value="Done" onClick="startHand()" disabled>
+			</form>
+			<form id="bid_input" class="dialog_bid">
+				<input id="bid" type="number" min="100" max="180" step="5" value="100">
+				<input id="submit_button" type="button" value="Bid" onClick="submitBid()">
+				<input id="pass_button" type="button" value="Pass" onClick="passBid()">
+			</form>
+			
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		deck = new Deck();
+  		newGame();
+	</script>
+
+</body>
+</html>

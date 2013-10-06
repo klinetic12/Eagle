@@ -13,7 +13,27 @@
 <body>
 	<div id="dialog" class="hidden">
 		<div id="dialog_text">
-			<span id="bid_text" class="dialog_bid"></span>
+			<div id="bid_text" class="dialog_bid">
+				Current Bid: <span id="current_bid_display">0</span>
+				<table id="player_bid_display">
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
 			<span id="nest_text" class="dialog_nest hidden">Select a trump color and five cards to return to the nest</span>
 		</div>
 		<div id="input_wrapper">
@@ -27,13 +47,38 @@
 				<input id="submit_button" type="button" value="Done" onClick="startHand()" disabled>
 			</form>
 			<form id="bid_input" class="dialog_bid">
+				<input id="pass_button" type="button" value="Pass" onClick="passBid()">
 				<input id="bid" type="number" min="100" max="180" step="5" value="100">
 				<input id="submit_button" type="button" value="Bid" onClick="submitBid()">
-				<input id="pass_button" type="button" value="Pass" onClick="passBid()">
 			</form>
-			
 		</div>
 	</div>
+	
+	<div id="scoreboard">
+		<span id="scoreboard_trump_display">
+			
+		</span>
+		<table>
+			<tr>
+				<td id="team_a_name"></td>
+				<td id="team_b_name"></td>
+			</tr>
+			<tr id="scoreboard_bid_display">
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>0</td>
+				<td>0</td>
+			</tr>
+			<tr>
+				<td>0</td>
+				<td>0</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div id="last_played" class="hidden"></div>
 
 	<script type="text/javascript">
 		deck = new Deck();

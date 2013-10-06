@@ -27,27 +27,27 @@ body {
 }
 
 .p0 {
-	top: 550px !important;
-	left: 1000px !important;
+	top: 500px !important;
+	left: 750px !important;
 }
 .p1 {
 	top: 300px !important;
-	left: 800px !important;
+	left: 600px !important;
 }
 .p2 {
-	top: 75px !important;
-	left: 1000px !important;
+	top: 100px !important;
+	left: 750px !important;
 }
 .p3 {
 	top: 300px !important;
-	left: 1200px !important;
+	left: 900px !important;
 }
 
 #dialog {
 	border: 2px solid #000000;
 	border-radius: 5px;
 	position: fixed;
-	z-index: 55;
+	z-index: 20;
 	top: 50%;
 	left: 50%;
 	margin-top: -100px;
@@ -66,6 +66,10 @@ body {
 	width: 90%;
 }
 
+#dialog #dialog_text table tr td {
+	padding-left: 15px;
+}
+
 #dialog #dialog_text .bidder {
 	color: red;
 }
@@ -79,6 +83,44 @@ body {
 #dialog #input_wrapper form {
 	position: relative;
 	text-align: center;
+}
+
+#scoreboard {
+	border: 2px solid #000000;
+	border-radius: 5px;
+	position: fixed;
+	z-index: 0;
+	top: 0%;
+	left: 100%;
+	margin-top: 25px;
+	margin-left: -400px;
+	width: 375px;
+	height: auto;
+	background-color: #f5f5ff;
+	font-size: 14px;
+	line-height: 110%;
+	padding-top: 5px;
+	text-align: center;
+}
+
+#scoreboard table {
+	width: 100%;
+	padding-top: 10px;
+}
+
+#scoreboard table tr:first-child td {
+	font-weight: bold;
+	text-decoration: underline;
+}
+#scoreboard table tr:nth-child(2) td {
+	color: blue;
+}
+#scoreboard table tr:nth-last-child(2) td {
+	border-bottom: 2px solid black;
+}
+#scoreboard table tr:last-child td {
+	font-weight: bold;
+	font-size: 14px;
 }
 
 .hidden {

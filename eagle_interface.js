@@ -1,7 +1,23 @@
 function initInterface() {
+	initScoreboard();
+	initBidDialog();
 	selectCardOnClick();
+}
+
+function initScoreboard() {
+	document.getElementById("team_a_name").innerHTML = players[0].name + "/" + players[2].name;
+	document.getElementById("team_b_name").innerHTML = players[1].name + "/" + players[3].name;
+}
+
+function initBidDialog() {
 	$('#dialog').draggable();
 	$("#trump_color").prop("selectedIndex", -1);
+	
+	var bidTable = document.getElementById("player_bid_display");
+	for (var i = 0, row; row = bidTable.rows[i]; i++) {
+		row.cells[0].innerHTML = players[i].name + ":";
+		row.cells[1].innerHTML = "0";
+	}
 }
 
 function selectCardOnClick() {
@@ -47,25 +63,20 @@ function moveCardDown(card) {
 	card.css({top: yLoc});
 }
 
-function getBidDialogText() {
-	var text = "Current Bid: " + currentBid + "<br/>";
-	var className;
-	for (var i = 0; i < players.length; i++) {
-		if(currentBidderIndex == i) {
-			className = 'bidder';
-		}
-		else {
-			className = "non_bidder";
-		}
-		text += '<span class="' + className + '">' + players[i].name + ': ' + players[i].bid + '</span><br/>';
-	}
-	return text;
+function updateBidDialog() {
+	$('#player_bid_display tr').eq(currentBidderIndex).removeClass('bidder');
+	var bidTable = document.getElementById("player_bid_display");
+	bidTable.rows[currentBidderIndex].cells[1].innerHTML = players[currentBidderIndex].bid;
 }
 
 function rerenderSubmitButton() {
 	document.getElementById('submit_button').disabled = 
 		(document.getElementById('trump_color').selectedIndex == -1 ||
 		$('.selected_for_nest').length < 5);
+}
+
+function refreshScoreboard() {
+	
 }
 
 Card.prototype = {

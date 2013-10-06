@@ -20,11 +20,11 @@ var centerCards = [];
 function Player(name) {
 	this.name = name;
 	this.cards = [];
-	this.bid = "";
+	this.bid = 0;
 }
 
 function initVariables() {
-	players = [new Player("A"), new Player("B"), new Player("C"), new Player("D")];
+	players = [new Player("Alex"), new Player("Brandon"), new Player("Chandan"), new Player("Derrick")];
 	teamAPoints = 0;
 	teamBPoints = 0;
 	bidStartIndex = 3;
@@ -74,7 +74,9 @@ function startBidding() {
 }
 
 function bidLoop() {
+	updateBidDialog();
 	currentBidderIndex = (currentBidderIndex + 1) % 4;
+	
 	if (players[currentBidderIndex].bid == 'passed') {
 		bidLoop();
 	}
@@ -82,7 +84,7 @@ function bidLoop() {
 		endBidding();
 	}
 	else {
-		$('#bid_text').html(getBidDialogText());
+		$('#player_bid_display tr').eq(currentBidderIndex).addClass('bidder');
 		// TODO: hide form when not the bidder
 	}
 }
@@ -93,7 +95,7 @@ function submitBid() {
 	
 	players[currentBidderIndex].bid = currentBid;
 	highestBidderIndex = currentBidderIndex;
-	
+	document.getElementById("current_bid_display").innerHTML = currentBid;
 	
 	bidInput.attr('min', currentBid + 5);
 	bidInput.val(currentBid + 5);
@@ -159,6 +161,7 @@ function playCard(index) {
 		var winningPlayer = findBestCard(centerCards);
 		addToScore(centerCards, winningPlayer);
 		
+		
 		// Last card in the hand
 		if (players[currentPlayer].cards.length == 0) {
 			addToScore(nest.cards, winningPlayer);
@@ -168,6 +171,8 @@ function playCard(index) {
 			currentPlayer = startingPlayer = winningPlayer;
 			addClass(players[currentPlayer].cards, 'playable');
 		}
+		setTimeout(function(){addClass(centerCards, 'hidden');}, 2000);
+		refreshScoreboard();
 	}
 	else {
 		// Set the starting color if necessary

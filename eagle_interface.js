@@ -76,7 +76,21 @@ function rerenderSubmitButton() {
 }
 
 function refreshScoreboard() {
+	var scoreboard = document.getElementById("scoreboard_table");
+	scoreboard.rows[scoreboard.rows.length-2].cells[0].innerHTML = teamHandPoints[0];
+	scoreboard.rows[scoreboard.rows.length-2].cells[1].innerHTML = teamHandPoints[1];
+}
+
+function refreshTotalScoreAndAddRow() {
+	refreshScoreboard();
+	var scoreboard = document.getElementById("scoreboard_table");
+	var rowIndex = scoreboard.rows.length-1;
+	scoreboard.rows[rowIndex].cells[0].innerHTML = teamPoints[0];
+	scoreboard.rows[rowIndex].cells[1].innerHTML = teamPoints[1];
 	
+	var newRow = scoreboard.insertRow(rowIndex);
+	newRow.insertCell(0).innerHTML = "0";
+	newRow.insertCell(1).innerHTML = "0";
 }
 
 Card.prototype = {

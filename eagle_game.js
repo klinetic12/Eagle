@@ -1,8 +1,7 @@
 // Game specific
 var players = [];
 var deck;
-var teamAPoints = 0;
-var teamBPoints = 0;
+var teamPoints = [0, 0];
 var bidStartIndex = 3;
 
 // Hand specific
@@ -25,19 +24,14 @@ function Player(name) {
 
 function initVariables() {
 	players = [new Player("Alex"), new Player("Brandon"), new Player("Chandan"), new Player("Derrick")];
-	teamAPoints = 0;
-	teamBPoints = 0;
+	teamPoints = [0, 0];
 	bidStartIndex = 3;
 }
 
 function newGame() {
 	initVariables();
 	initInterface();
-	
-	while (teamAPoints < 300 && teamBPoints < 300) {
-		newHand();
-		teamAPoints = 350;
-	}
+	newHand();
 };
 
 function newHand() {
@@ -50,6 +44,7 @@ function newHand() {
 }
 
 function shuffleAndDeal() {
+	$('.card').attr('class', 'card');
 	deck.shuffle();
 	for (var i = 0; i < 4; i++ ) {
 		players[i%4].cards = deck.cards.slice(i*10, i*10+10);
@@ -130,6 +125,9 @@ function startHand() {
 	
 	trumpColor = document.getElementById('trump_color').value;
 	
+	document.getElementById('scoreboard_trump_display').innerHTML = "Trump: " + trumpColor;
+	document.getElementById('scoreboard_bid_display').cells[highestBidderIndex % 2].innerHTML = "Current Bid: " + currentBid;
+	
 	// Put selected cards in the nest
 	removeClass(players[highestBidderIndex].cards, 'selectable_for_nest');
 	for (var i = players[highestBidderIndex].cards.length-1; i >= 0 ; i--) {
@@ -161,18 +159,20 @@ function playCard(index) {
 		var winningPlayer = findBestCard(centerCards);
 		addToScore(centerCards, winningPlayer);
 		
+		setTimeout(function(){
+			addClass(centerCards, 'hidden');
+			addClass(players[currentPlayer].cards, 'playable');
+		}, 2000);
 		
 		// Last card in the hand
 		if (players[currentPlayer].cards.length == 0) {
-			addToScore(nest.cards, winningPlayer);
+			addToScore(nest, winningPlayer);
 			endHand();
 		}
 		else {
+			refreshScoreboard();
 			currentPlayer = startingPlayer = winningPlayer;
-			addClass(players[currentPlayer].cards, 'playable');
 		}
-		setTimeout(function(){addClass(centerCards, 'hidden');}, 2000);
-		refreshScoreboard();
 	}
 	else {
 		// Set the starting color if necessary
@@ -211,16 +211,31 @@ function addToScore(cards, winningPlayer) {
 	var points = 0;
 	for (var i = 0; i < cards.length; i++) {
 		switch(cards[i].number) {
-			case "": points += 20;
-			case 1: points += 15;
-			case 14: points += 10;
-			case 10: points += 10;
-			case 5: points += 5;
+			case "": points += 20; break;
+			case 1: points += 15; break;
+			case 14: points += 10; break;
+			case 10: points += 10; break;
+			case 5: points += 5; break;
 		}
 	}
 	teamHandPoints[winningPlayer%2] += points;
 }
 
 function endHand() {
+	// Show nest for 3 seconds
+	printCards(nest, 650, 30);
+	removeClass(nest, 'hidden');
+	setTimeout(function(){addClass(nest, 'hidden');}, 3000);
 	
+	// Compute new total scores
+	if (teamHandPoints[highestBidderIndex%2] < currentBid) {
+		teamHandPoints[highestBidderIndex%2] = -currentBid;
+	}
+	teamPoints[0] += teamHandPoints[0];
+	teamPoints[1] += teamHandPoints[1];
+	refreshTotalScoreAndAddRow();
+	
+	if (teamPoints[0] < 500 && teamPoints[1] < 500) {
+		newHand();
+	}
 }

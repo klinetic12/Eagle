@@ -64,7 +64,7 @@ function moveCardDown(card) {
 }
 
 function updateBidDialog() {
-	$('#player_bid_display tr').eq(currentBidderIndex).removeClass('bidder');
+	$('.bidder').removeClass('bidder');
 	var bidTable = document.getElementById("player_bid_display");
 	bidTable.rows[currentBidderIndex].cells[1].innerHTML = players[currentBidderIndex].bid;
 }

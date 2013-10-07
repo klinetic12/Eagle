@@ -44,7 +44,6 @@ function newHand() {
 }
 
 function shuffleAndDeal() {
-	$('.card').attr('class', 'card');
 	deck.shuffle();
 	for (var i = 0; i < 4; i++ ) {
 		players[i%4].cards = deck.cards.slice(i*10, i*10+10);
@@ -63,6 +62,12 @@ function startBidding() {
 	currentBid = 0;
 	currentBidderIndex = bidStartIndex;
 	highestBidderIndex = bidStartIndex;
+	
+	var bidTable = document.getElementById("player_bid_display");
+	for(var i = 0; i < 4; i++) {
+		players[i].bid = 0;
+		bidTable.rows[i].cells[1].innerHTML = "0";
+	}
 	
 	$('#dialog').removeClass('hidden');
 	bidLoop();
@@ -104,6 +109,7 @@ function passBid() {
 }
 
 function endBidding() {
+	$('#player_bid_display tr').eq(currentBidderIndex).removeClass('bidder');
 	bidStartIndex = (bidStartIndex + 1) % 4;
 	
 	// Add cards to highest bidder's hand
@@ -225,8 +231,13 @@ function endHand() {
 	// Show nest for 3 seconds
 	printCards(nest, 650, 30);
 	removeClass(nest, 'hidden');
-	setTimeout(function(){addClass(nest, 'hidden');}, 3000);
-	
+	setTimeout(function(){
+		addClass(nest, 'hidden');
+		checkScore();
+	}, 3000);
+}
+
+function checkScore() {
 	// Compute new total scores
 	if (teamHandPoints[highestBidderIndex%2] < currentBid) {
 		teamHandPoints[highestBidderIndex%2] = -currentBid;
@@ -236,6 +247,12 @@ function endHand() {
 	refreshTotalScoreAndAddRow();
 	
 	if (teamPoints[0] < 500 && teamPoints[1] < 500) {
+		$('.dialog_nest').addClass('hidden');
+		$('.dialog_bid').removeClass('hidden');
+		$('.card').attr('class', 'card');
 		newHand();
+	}
+	else {
+		showWinnerDialog();
 	}
 }

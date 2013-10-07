@@ -63,6 +63,7 @@ function startBidding() {
 	currentBidderIndex = bidStartIndex;
 	highestBidderIndex = bidStartIndex;
 	
+	document.getElementById("current_bid_display").innerHTML = currentBid;
 	var bidTable = document.getElementById("player_bid_display");
 	for(var i = 0; i < 4; i++) {
 		players[i].bid = 0;

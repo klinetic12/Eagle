@@ -4,11 +4,7 @@
 <meta charset="ISO-8859-1">
 <title>Eagle</title>
 <link rel="stylesheet" href="eagle.css">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-<script src="deck_of_cards.js" type="text/javascript"></script>
-<script src="eagle_interface.js" type="text/javascript"></script>
-<script src="eagle_game.js" type="text/javascript"></script>
+
 </head>
 <body>
 	<div id="dialog" class="hidden">
@@ -38,18 +34,18 @@
 		</div>
 		<div id="input_wrapper">
 			<form id="nest_input" class="dialog_nest hidden">
-				<select id="trump_color" onchange="rerenderSubmitButton()">
+				<select id="trump_color">
 					<option value="BLACK">Black</option>
 					<option value="BLUE">Blue</option>
 					<option value="GREEN">Green</option>
 					<option value="RED">Red</option>
 				</select>
-				<input id="submit_button" type="button" value="Done" onClick="startHand()" disabled>
+				<input id="done_button" type="button" value="Done" disabled>
 			</form>
 			<form id="bid_input" class="dialog_bid">
-				<input id="pass_button" type="button" value="Pass" onClick="passBid()">
+				<input id="pass_button" type="button" value="Pass">
 				<input id="bid" type="number" min="100" max="180" step="5" value="100">
-				<input id="submit_button" type="button" value="Bid" onClick="submitBid()">
+				<input id="submit_button" type="button" value="Bid">
 			</form>
 		</div>
 	</div>
@@ -80,9 +76,12 @@
 	
 	<div id="last_played" class="hidden"></div>
 
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	<script src="eagle.js" type="text/javascript"></script>
+	
 	<script type="text/javascript">
-		deck = new Deck();
-  		newGame();
+  		eagle.start();
 	</script>
 
 </body>
